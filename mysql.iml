@@ -1,0 +1,61 @@
+select role,count(role) from emp group by role;
+
+select depart.depart_id,count(depart_id) from staff join depart on staff.depart_id<=>depart.depart_id;
+select depart.name,count(depart.depart_id) from staff join depart on staff.depart_id<=>depart.depart_id group by depart.depart_id;
+create table depart
+(
+depart_id int primary key,
+name varchar(20)
+);
+insert into depart values
+(1,'纺织'),
+(2,'加工'),
+(3,'钢铁');
+select *from depart;
+
+create table staff
+(
+staff_id int primary key,
+name varchar(20),
+age int,
+depart_id int,
+foreign key(depart_id) references depart(depart_id)
+);
+insert into staff values
+(1,'张三',18,1),
+(2,'李四',19,2),
+(3,'王五',35,1),
+(4,'黄六',24,3);
+select * from staff;
+
+drop table salary;
+create table salary
+(
+salary_id int,
+staff_id int,
+salary decimal(5,2),
+month int,
+primary key(salary_id,staff_id)
+);
+insert into salary values
+(1,1,333.5,9),
+(2,2,457.5,9),
+(3,3,375.7,6),
+(4,4,975.5,9);
+select * from salary;
+
+
+//2.1
+select depart.name,sum(salary.salary) from depart 
+join staff on depart.depart_id=staff.depart_id 
+join salary on  staff.staff_id=salary.staff_id
+where salary.month=9
+group by depart.depart_id ;
+//2.2
+select depart.name,count(depart.depart_id) from staff 
+join depart on staff.depart_id<=>depart.depart_id group by depart.depart_id;
+//2.3
+select salary.month,sum(salary.salary) from depart 
+join staff on depart.depart_id=staff.depart_id 
+join salary on  staff.staff_id=salary.staff_id
+group by salary.month;
